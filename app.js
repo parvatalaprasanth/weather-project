@@ -25,7 +25,11 @@ app.post("/",function(req,res){
   const query=req.body.cityname;
   const url="https://api.openweathermap.org/data/2.5/weather?q="+query+"&appid=64c9c943d966097367bee336201a6dbe&units=metric";
   https.get(url, function(response){
-    console.log(response.statusCode);
+    if(response.statusCode!=200){
+      res.sendFile(__dirname+"/fail.html");
+      console.log("oh");
+      return
+    }
 
     response.on("data",async function(data){
       const weatherdata=JSON.parse(data);
@@ -40,6 +44,7 @@ app.post("/",function(req,res){
 
       res.write("<h1>temparature in "+query+" "+temp+"</h1>");
       res.send();
+
 
 
 
